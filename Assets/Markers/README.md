@@ -9,7 +9,7 @@ The choices call TrackedImagePlacement.SpawnCharacter with indices 0 through 3.
 Character tap interaction remains
 on each character prefab and uses the existing screen-space XR interactor.
 
-The entire marker-001.png is the reference image. Its physical width is set to 0.07 metres, matching the measured 7 x 7 cm display
+The entire marker-pokeball.png is the reference image. Its physical width is set to 0.07 metres, matching the measured 7 x 7 cm display
 on the test phone. Keep that display size fixed; update MarkerReferenceLibrary
 if the full image is displayed at another size. The image library currently
 contains a single image named marker-001. QR payload decoding is not implemented.
@@ -28,7 +28,7 @@ Offset and Rotation Offset can be adjusted on Object Spawner in AR_Scene.
 
 The selected XR Simulation environment is Assets/Simulation/MarkerSimulationEnvironment.prefab,
 a local copy of the package environment. Its existing simulated tracked image uses
-marker-001.png and is 7 cm wide, horizontal on the table. The starting camera looks
+marker-pokeball.png and is 7 cm wide, horizontal on the table. The starting camera looks
 at it. The environment selection is an Editor preference shared by scenes; no
 SampleScene or package prefab was edited.
 
@@ -50,3 +50,9 @@ rendered pixels with a real camera. This validates the placement flow, not Andro
 image-recognition reliability. Do not add a second environment instance to AR_Scene.
 
 No Android build was run and build settings were not changed.
+
+The Poké Ball artwork is now the active marker. The logical reference name remains
+marker-001 and the QR payload remains ar-chicken://marker/001. The old artwork is
+retained as a file but is not in the active image library. The new candidate scored
+100/100 with arcoreimg; QR decode checks passed at 1024, 512 and 360 pixels.
+Real-device tracking still needs validation with the rebuilt app.

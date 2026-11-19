@@ -21,9 +21,9 @@ MonoBehaviour:
       m_GuidLow: 5667937424104031019
       m_GuidHigh: 5084542776201643195
     m_SerializedTextureGuid:
-      m_GuidLow: 5197189616936917543
-      m_GuidHigh: 7203976261649659056
+      m_GuidLow: 4893602811672057941
+      m_GuidHigh: 15165859819174195385
     m_Size: {x: 0.07, y: 0.07}
     m_SpecifySize: 1
     m_Name: marker-001
-    m_Texture: {fileID: 2800000, guid: b3df9a27206b4820b074f9dd3daaf963, type: 3}
+    m_Texture: {fileID: 2800000, guid: 6d90d85591d443e9b9703f4327f577d2, type: 3}
