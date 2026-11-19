@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5948df13209e47a8b24c19126dc8cb43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAnimator: {fileID: 0}
+  characterAnimator: {fileID: 8394173410279410506}
   reactionTrigger: React
   idleState: Base Layer.idle
   maximumTapMovement: 20
@@ -160,7 +160,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 2f04d909f214f71478faf8f691872dc9, type: 3}
+  m_Resource: {fileID: 8300000, guid: 8798e8975b4942a4f8bbf516acc0087a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -256,7 +256,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3970243614316841892, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.821999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3970243614316841892, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
       propertyPath: m_LocalPosition.y
@@ -264,7 +264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3970243614316841892, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4780.4087
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3970243614316841892, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
       propertyPath: m_LocalRotation.w
@@ -310,5 +310,10 @@ PrefabInstance:
 --- !u!4 &6917070411988580247 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3970243614316841892, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
+  m_PrefabInstance: {fileID: 1664223634078565323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8394173410279410506 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -2060789707785385855, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
   m_PrefabInstance: {fileID: 1664223634078565323}
   m_PrefabAsset: {fileID: 0}
