@@ -1,0 +1,45 @@
+# Marker placement prototype
+
+AR_Scene now uses AR Tracked Image Manager and TrackedImagePlacement. The previous
+surface spawner components remain in the scene but are disabled. The template UI
+is inactive because it manages manual placement. A separate Marker Placement UI
+canvas contains the confirmation button. Character tap interaction remains
+on CharPrefab and uses the existing screen-space XR interactor.
+
+The entire marker-001.png is the reference image. Its physical width is provisionally
+0.06 metres. Measure the full displayed image on the second phone and update
+MarkerReferenceLibrary before testing on hardware. The image library currently
+contains a single image named marker-001. QR payload decoding is not implemented.
+
+TrackedImagePlacement shows a cyan placement indicator at the QR centre and a
+Spawn button while the marker is tracked. Pressing Spawn creates one character
+and hides the indicator and button. It aligns the character with the QR centre, hides
+it when tracking is not Tracking, and reuses it after reacquisition. Placement Point
+is normalized from the top-left of the full image. Character Scale multiplies the
+prefab's scale; 0.25 makes this prototype character roughly 4.6 cm tall. Surface
+Offset and Rotation Offset can be adjusted on Object Spawner in AR_Scene.
+
+## Editor simulation
+
+The selected XR Simulation environment is Assets/Simulation/MarkerSimulationEnvironment.prefab,
+a local copy of the package environment. Its existing simulated tracked image uses
+marker-001.png and is 6 cm wide, horizontal on the table. The starting camera looks
+at it. The environment selection is an Editor preference shared by scenes; no
+SampleScene or package prefab was edited.
+
+1. Allow Unity to import and compile, then open/reload AR_Scene.
+2. Enter Play Mode. Image detection should show the cyan indicator and Spawn button.
+   No chicken should appear until you press Spawn. Losing tracking before pressing
+   Spawn should hide both controls; reacquiring the marker should restore them.
+   Press Spawn: one chicken should appear and both controls should disappear.
+3. Navigate with right mouse + WASD and click/release on the chicken to react.
+4. Look away, then return: the character should hide when tracking is lost and
+   reappear as the same instance when tracking resumes.
+5. To inspect or move the simulated target during Play Mode, expand the simulation
+   environment scene in the Hierarchy and find Marker 001 (6 cm).
+
+XR Simulation uses the SimulatedTrackedImage component; it does not recognize the
+rendered pixels with a real camera. This validates the placement flow, not Android
+image-recognition reliability. Do not add a second environment instance to AR_Scene.
+
+No Android build was run and build settings were not changed.
