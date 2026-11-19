@@ -24,8 +24,10 @@ namespace ARApp
 
         private ARTrackedImage currentImage;
         private GameObject characterInstance;
+        private int currentCharacterIndex = -1;
 
-        public bool CanSpawn => isActiveAndEnabled && characterInstance == null && IsTracking(currentImage);
+        public bool CanSpawn => isActiveAndEnabled && IsTracking(currentImage);
+        public event System.Action CharacterSelected;
 
         private void Awake()
         {
@@ -83,10 +85,25 @@ namespace ARApp
             }
 
             var characterPrefab = characterPrefabs[characterIndex];
+            if (characterInstance != null && currentCharacterIndex == characterIndex)
+            {
+                CharacterSelected?.Invoke();
+                return;
+            }
+
             var pose = GetPlacementPose();
+            if (characterInstance != null)
+            {
+                // Destroy is deferred; deactivate now to stop rendering, input and audio immediately.
+                characterInstance.SetActive(false);
+                Destroy(characterInstance);
+            }
+
             characterInstance = Instantiate(characterPrefab, pose.position, pose.rotation, transform);
             characterInstance.transform.localScale = characterPrefab.transform.localScale * characterScale;
+            currentCharacterIndex = characterIndex;
             SetPreviewVisible(false);
+            CharacterSelected?.Invoke();
         }
 
         private Pose GetPlacementPose()

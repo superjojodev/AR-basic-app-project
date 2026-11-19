@@ -31,12 +31,13 @@ namespace ARApp
         {
             openButton.onClick.AddListener(ShowMenu);
             cancelButton.onClick.AddListener(HideMenu);
+            placement.CharacterSelected += HideMenu;
             HideMenu();
         }
 
         private void LateUpdate()
         {
-            // Close stale choices immediately after tracking loss or a successful spawn.
+            // Close stale choices immediately after tracking loss.
             if (!placement.CanSpawn && menuOpen)
                 HideMenu();
 
@@ -67,6 +68,8 @@ namespace ARApp
 
         private void OnDisable()
         {
+            if (placement != null)
+                placement.CharacterSelected -= HideMenu;
             if (openButton != null)
             {
                 openButton.onClick.RemoveListener(ShowMenu);
