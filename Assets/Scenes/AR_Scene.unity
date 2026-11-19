@@ -1418,6 +1418,7 @@ GameObject:
   - component: {fileID: 436358034}
   - component: {fileID: 436358033}
   - component: {fileID: 436358035}
+  - component: {fileID: 436358036}
   m_Layer: 0
   m_Name: Object Spawner
   m_TagString: Untagged
@@ -1520,9 +1521,9 @@ MonoBehaviour:
   m_ObjectSpawnTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 436358033}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.ObjectSpawner, Unity.XR.Interaction.Toolkit.Samples.StarterAssets
-        m_MethodName: SpawnObject
+      - m_Target: {fileID: 436358036}
+        m_TargetAssemblyTypeName: ARApp.SingleInstancePlacement, Assembly-CSharp
+        m_MethodName: RequestSpawn
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1532,6 +1533,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &436358036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436358032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f49dd43f01f8464288ac975ba29418c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectSpawner: {fileID: 436358033}
 --- !u!1 &451820663
 GameObject:
   m_ObjectHideFlags: 0
