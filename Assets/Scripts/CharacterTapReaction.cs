@@ -17,6 +17,8 @@ namespace ARApp
         [SerializeField] private string reactionTrigger = "React";
         [SerializeField] private string idleState = "Base Layer.idle";
         [SerializeField, Min(0f)] private float maximumTapMovement = 20f;
+        [Tooltip("Optional sound played once on spawn and when a tap starts a reaction.")]
+        [SerializeField] private AudioSource characterAudio;
 
         private XRSimpleInteractable interactable;
         private int reactionTriggerHash;
@@ -38,6 +40,18 @@ namespace ARApp
                 Debug.LogError("Assign the character's Animator to Character Tap Reaction.", this);
                 enabled = false;
             }
+        }
+
+        private void Start()
+        {
+            // Start runs once per instance, so tracking reacquisition won't replay the spawn sound.
+            PlayCharacterSound();
+        }
+
+        private void PlayCharacterSound()
+        {
+            if (characterAudio != null && characterAudio.isActiveAndEnabled && characterAudio.clip != null)
+                characterAudio.Play();
         }
 
         private void OnEnable()
@@ -121,6 +135,7 @@ namespace ARApp
             reactionInProgress = true;
             hasLeftIdle = false;
             characterAnimator.SetTrigger(reactionTriggerHash);
+            PlayCharacterSound();
         }
 
         private void LateUpdate()

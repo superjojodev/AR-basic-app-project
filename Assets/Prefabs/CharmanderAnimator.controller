@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -2474113961476506421, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
+  m_Motion: {fileID: -2474113961476506421, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -98,7 +98,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -5262255539623706057, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
+  m_Motion: {fileID: -5262255539623706057, guid: 3abe905e7a03d8743a84604c7b3853ca, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -110,7 +110,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PokemonAnimator
+  m_Name: CharmanderAnimator
   serializedVersion: 6
   m_AnimatorParameters:
   - m_Name: React
