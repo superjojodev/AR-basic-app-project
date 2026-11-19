@@ -16,11 +16,17 @@ namespace ARApp
         [SerializeField] private Animator characterAnimator;
         [SerializeField] private string reactionTrigger = "React";
         [SerializeField] private string idleState = "Base Layer.idle";
+        [SerializeField, Min(0f)] private float maximumTapMovement = 20f;
 
         private XRSimpleInteractable interactable;
         private int reactionTriggerHash;
         private bool reactionInProgress;
         private bool hasLeftIdle;
+        private ScreenSpaceSelectInput pendingTapInput;
+        private int selectionEndedFrame = -1;
+        private Vector2 pressPosition;
+        private bool hasPressPosition;
+        private bool pointerMovedTooFar;
 
         private void Awake()
         {
@@ -37,11 +43,15 @@ namespace ARApp
         private void OnEnable()
         {
             interactable.selectEntered.AddListener(OnSelectEntered);
+            interactable.selectExited.AddListener(OnSelectExited);
+            Debug.Log("enabled tap reaction");
         }
 
         private void OnDisable()
         {
             interactable.selectEntered.RemoveListener(OnSelectEntered);
+            interactable.selectExited.RemoveListener(OnSelectExited);
+            pendingTapInput = null;
             if (characterAnimator != null)
                 characterAnimator.ResetTrigger(reactionTriggerHash);
             reactionInProgress = false;
@@ -50,17 +60,60 @@ namespace ARApp
 
         private void OnSelectEntered(SelectEnterEventArgs args)
         {
+            Debug.Log("tap control entered");
             if (reactionInProgress || !characterAnimator.isActiveAndEnabled || !IsIdle())
                 return;
-
+            Debug.Log("tap control advanced");
             // Selection also supports manipulation gestures. Only accept the
             // existing tap input; do not create a second input action or raycast.
             if (!(args.interactorObject is XRRayInteractor rayInteractor) ||
                 !(rayInteractor.selectInput.GetObjectReference() is ScreenSpaceSelectInput input))
                 return;
 
-            if (!input.tapStartPositionInput.TryReadValue(out _) ||
-                input.dragCurrentPositionInput.TryReadValue(out _) ||
+            // Mouse selection starts on press, but the Tap interaction performs
+            // on release. Keep this target until that input update is processed.
+            pendingTapInput = input;
+            selectionEndedFrame = -1;
+            hasPressPosition = input.dragCurrentPositionInput.TryReadValue(out pressPosition);
+            pointerMovedTooFar = false;
+        }
+
+        private void OnSelectExited(SelectExitEventArgs args)
+        {
+            if (args.isCanceled)
+                pendingTapInput = null;
+            else
+                selectionEndedFrame = Time.frameCount;
+        }
+
+        private void ProcessPendingTap()
+        {
+            if (pendingTapInput == null)
+                return;
+
+            var input = pendingTapInput;
+            if (hasPressPosition && input.dragCurrentPositionInput.TryReadValue(out var position))
+            {
+                // The Editor mouse drag binding is active even for a stationary
+                // press. Reject actual movement rather than the binding itself.
+                pointerMovedTooFar |= Vector2.Distance(pressPosition, position) > maximumTapMovement;
+            }
+
+            var tapAction = input.tapStartPositionInput.inputActionReference?.action;
+            bool tapCompleted = tapAction != null && tapAction.WasPerformedThisFrame();
+
+            // Check after XRI selection processing, including the release frame.
+            // A performed action may already have returned to Waiting by now.
+            if (!tapCompleted)
+            {
+                if (selectionEndedFrame >= 0)
+                    pendingTapInput = null;
+                return;
+            }
+
+            pendingTapInput = null;
+            if (pointerMovedTooFar || reactionInProgress ||
+                !characterAnimator.isActiveAndEnabled || !IsIdle() ||
                 input.pinchGapDeltaInput.TryReadValue(out _) ||
                 input.twistDeltaRotationInput.TryReadValue(out _))
                 return;
@@ -72,6 +125,8 @@ namespace ARApp
 
         private void LateUpdate()
         {
+            ProcessPendingTap();
+
             if (!reactionInProgress)
                 return;
 
