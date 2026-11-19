@@ -54,8 +54,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9, y: 1.85, z: 1.4}
-  m_Center: {x: 0, y: 0.92, z: -0.06}
+  m_Size: {x: 17.380234, y: 23.03387, z: 29.077045}
+  m_Center: {x: 0.0049772263, y: 10.962104, z: -5.767845}
 --- !u!114 &5940774868749871381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5948df13209e47a8b24c19126dc8cb43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAnimator: {fileID: 0}
+  characterAnimator: {fileID: 828122593922565198}
   reactionTrigger: React
   idleState: Base Layer.idle
   maximumTapMovement: 20
@@ -208,6 +208,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 3150474306388093854, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
+--- !u!95 &828122593922565198 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -2060789707785385855, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
+  m_PrefabInstance: {fileID: 7500903171763539151}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2377429765976012947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3970243614316841892, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
