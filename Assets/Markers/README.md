@@ -6,9 +6,9 @@ is inactive because it manages manual placement. A separate Marker Placement UI
 canvas contains the confirmation button. Character tap interaction remains
 on CharPrefab and uses the existing screen-space XR interactor.
 
-The entire marker-001.png is the reference image. Its physical width is provisionally
-0.06 metres. Measure the full displayed image on the second phone and update
-MarkerReferenceLibrary before testing on hardware. The image library currently
+The entire marker-001.png is the reference image. Its physical width is set to 0.07 metres, matching the measured 7 x 7 cm display
+on the test phone. Keep that display size fixed; update MarkerReferenceLibrary
+if the full image is displayed at another size. The image library currently
 contains a single image named marker-001. QR payload decoding is not implemented.
 
 TrackedImagePlacement shows a cyan placement indicator at the QR centre and a
@@ -23,7 +23,7 @@ Offset and Rotation Offset can be adjusted on Object Spawner in AR_Scene.
 
 The selected XR Simulation environment is Assets/Simulation/MarkerSimulationEnvironment.prefab,
 a local copy of the package environment. Its existing simulated tracked image uses
-marker-001.png and is 6 cm wide, horizontal on the table. The starting camera looks
+marker-001.png and is 7 cm wide, horizontal on the table. The starting camera looks
 at it. The environment selection is an Editor preference shared by scenes; no
 SampleScene or package prefab was edited.
 
@@ -36,7 +36,7 @@ SampleScene or package prefab was edited.
 4. Look away, then return: the character should hide when tracking is lost and
    reappear as the same instance when tracking resumes.
 5. To inspect or move the simulated target during Play Mode, expand the simulation
-   environment scene in the Hierarchy and find Marker 001 (6 cm).
+   environment scene in the Hierarchy and find Marker 001 (7 cm).
 
 XR Simulation uses the SimulatedTrackedImage component; it does not recognize the
 rendered pixels with a real camera. This validates the placement flow, not Android
