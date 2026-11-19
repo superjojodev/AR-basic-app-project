@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -12,9 +11,8 @@ namespace ARApp
     public sealed class TrackedImagePlacement : MonoBehaviour
     {
         [SerializeField] private ARTrackedImageManager imageManager;
-        [SerializeField] private GameObject characterPrefab;
+        [SerializeField] private GameObject[] characterPrefabs;
         [SerializeField] private Transform placementIndicator;
-        [SerializeField] private Button spawnButton;
         [SerializeField] private string referenceImageName = "marker-001";
 
         [Tooltip("Position within the complete image, measured from its top-left corner (0 to 1).")]
@@ -27,19 +25,19 @@ namespace ARApp
         private ARTrackedImage currentImage;
         private GameObject characterInstance;
 
+        public bool CanSpawn => isActiveAndEnabled && characterInstance == null && IsTracking(currentImage);
+
         private void Awake()
         {
-            if (imageManager != null && characterPrefab != null && placementIndicator != null && spawnButton != null)
+            if (imageManager != null && characterPrefabs != null && characterPrefabs.Length > 0 && placementIndicator != null)
                 return;
 
-            Debug.LogError("Assign the image manager, character prefab, placement indicator and spawn button.", this);
+            Debug.LogError("Assign the image manager, character prefabs and placement indicator.", this);
             enabled = false;
         }
 
         private void OnEnable()
         {
-            if (spawnButton != null)
-                spawnButton.onClick.AddListener(SpawnCharacter);
             SetPreviewVisible(false);
         }
 
@@ -72,12 +70,19 @@ namespace ARApp
             SetCharacterVisible(true);
         }
 
-        private void SpawnCharacter()
+        public void SpawnCharacter(int characterIndex)
         {
             // Recheck on click: tracking may have changed since the last preview.
-            if (!isActiveAndEnabled || characterInstance != null || !IsTracking(currentImage))
+            if (!CanSpawn)
                 return;
 
+            if (characterIndex < 0 || characterIndex >= characterPrefabs.Length || characterPrefabs[characterIndex] == null)
+            {
+                Debug.LogWarning("Choose a valid character prefab index.", this);
+                return;
+            }
+
+            var characterPrefab = characterPrefabs[characterIndex];
             var pose = GetPlacementPose();
             characterInstance = Instantiate(characterPrefab, pose.position, pose.rotation, transform);
             characterInstance.transform.localScale = characterPrefab.transform.localScale * characterScale;
@@ -102,11 +107,6 @@ namespace ARApp
         {
             if (placementIndicator != null)
                 placementIndicator.gameObject.SetActive(visible);
-            if (spawnButton != null)
-            {
-                spawnButton.interactable = visible;
-                spawnButton.gameObject.SetActive(visible);
-            }
         }
 
         private ARTrackedImage FindTrackedMarker()
@@ -137,8 +137,6 @@ namespace ARApp
 
         private void OnDisable()
         {
-            if (spawnButton != null)
-                spawnButton.onClick.RemoveListener(SpawnCharacter);
             SetPreviewVisible(false);
             SetCharacterVisible(false);
         }
