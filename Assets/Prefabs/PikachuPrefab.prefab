@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2377429765976012947}
@@ -195,6 +195,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2060789707785385855, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6822525c321dcef4aaab83c60c2633c6, type: 2}
     - target: {fileID: 2107409826236812522, guid: 85cfcdd11b5fc3942be2f8fa33eb6e19, type: 3}
       propertyPath: m_Name
       value: pikachu
