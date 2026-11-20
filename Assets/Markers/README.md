@@ -56,3 +56,7 @@ marker-001 and the QR payload remains ar-chicken://marker/001. The old artwork i
 retained as a file but is not in the active image library. The new candidate scored
 100/100 with arcoreimg; QR decode checks passed at 1024, 512 and 360 pixels.
 Real-device tracking still needs validation with the rebuilt app.
+
+AR_Scene disables AR Plane Manager, sets plane detection to None and clears its
+plane prefab. Template surface overlays and plane-based occlusion are not used.
+Marker tracking, character collider taps and the cyan placement preview remain active.
