@@ -27,7 +27,8 @@ namespace ARApp
         private int currentCharacterIndex = -1;
         private Quaternion spawnYaw = Quaternion.identity;
 
-        public bool CanSpawn => isActiveAndEnabled && IsTracking(currentImage);
+        public bool CanSpawn => isActiveAndEnabled &&
+            (IsTracking(currentImage) || CanRetainCharacter());
         public event System.Action CharacterSelected;
 
         private void Awake()
@@ -58,10 +59,7 @@ namespace ARApp
             if (!IsTracking(currentImage))
             {
                 SetPreviewVisible(false);
-                bool canKeepCharacter = characterInstance != null &&
-                    imageManager.isActiveAndEnabled && currentImage != null &&
-                    currentImage.trackingState == TrackingState.Limited &&
-                    ARSession.state == ARSessionState.SessionTracking;
+                bool canKeepCharacter = CanRetainCharacter();
 
                 if (canKeepCharacter)
                 {
@@ -180,6 +178,16 @@ namespace ARApp
         {
             return imageManager != null && imageManager.isActiveAndEnabled &&
                 image != null && image.trackingState == TrackingState.Tracking;
+        }
+
+        private bool CanRetainCharacter()
+        {
+            // The same retained pose supports both visibility and replacement.
+            // An existing character proves initial placement already succeeded.
+            return characterInstance != null && imageManager != null &&
+                imageManager.isActiveAndEnabled && currentImage != null &&
+                currentImage.trackingState == TrackingState.Limited &&
+                ARSession.state == ARSessionState.SessionTracking;
         }
 
         private void SetCharacterVisible(bool visible)

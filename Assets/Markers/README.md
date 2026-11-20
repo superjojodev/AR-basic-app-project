@@ -23,7 +23,8 @@ it when image tracking is None or limited tracking has no active session trackin
 and reuses it after reacquisition. After spawning, Limited image tracking retains
 the character at the provider's last-known marker pose while the AR session tracks.
 This assumes the marker stays stationary while it cannot be seen clearly.
-New placement/replacement still requires full image tracking. Placement Point
+Initial placement requires full image tracking. Once a character exists, the menu
+also permits replacement during Limited image tracking while the session tracks. Placement Point
 is normalized from the top-left of the full image. Character Scale multiplies the
 prefab's scale; the final size depends on the selected prefab. Surface
 Offset and Rotation Offset can be adjusted on Object Spawner in AR_Scene.
