@@ -25,6 +25,7 @@ namespace ARApp
         private ARTrackedImage currentImage;
         private GameObject characterInstance;
         private int currentCharacterIndex = -1;
+        private Quaternion spawnYaw = Quaternion.identity;
 
         public bool CanSpawn => isActiveAndEnabled && IsTracking(currentImage);
         public event System.Action CharacterSelected;
@@ -68,7 +69,7 @@ namespace ARApp
             }
 
             SetPreviewVisible(false);
-            characterInstance.transform.SetPositionAndRotation(pose.position, pose.rotation);
+            characterInstance.transform.SetPositionAndRotation(pose.position, pose.rotation * spawnYaw);
             SetCharacterVisible(true);
         }
 
@@ -99,11 +100,29 @@ namespace ARApp
                 Destroy(characterInstance);
             }
 
-            characterInstance = Instantiate(characterPrefab, pose.position, pose.rotation, transform);
+            spawnYaw = GetCameraFacingYaw(pose);
+            characterInstance = Instantiate(characterPrefab, pose.position, pose.rotation * spawnYaw, transform);
             characterInstance.transform.localScale = characterPrefab.transform.localScale * characterScale;
             currentCharacterIndex = characterIndex;
             SetPreviewVisible(false);
             CharacterSelected?.Invoke();
+        }
+
+        private Quaternion GetCameraFacingYaw(Pose pose)
+        {
+            var camera = Camera.main;
+            if (camera == null)
+                return Quaternion.identity;
+
+            // Measure heading in marker space: only rotate around the character's Y axis.
+            // Ignore camera elevation so the character never tilts toward the device.
+            var direction = Quaternion.Inverse(pose.rotation) * (camera.transform.position - pose.position);
+            direction.y = 0f;
+            if (direction.sqrMagnitude < 0.000001f)
+                return Quaternion.identity;
+
+            float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            return Quaternion.Euler(0f, yaw, 0f);
         }
 
         private Pose GetPlacementPose()
