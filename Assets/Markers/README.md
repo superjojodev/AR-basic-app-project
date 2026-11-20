@@ -19,7 +19,11 @@ Choose character button while the marker is tracked. Choosing Pikachu, Charmande
 and hides the indicator. The button remains available while tracking so another choice
 can replace the character at the same marker position. Choosing the current character
 only closes the menu. It aligns the character with the QR centre, hides
-it when tracking is not Tracking, and reuses it after reacquisition. Placement Point
+it when image tracking is None or limited tracking has no active session tracking,
+and reuses it after reacquisition. After spawning, Limited image tracking retains
+the character at the provider's last-known marker pose while the AR session tracks.
+This assumes the marker stays stationary while it cannot be seen clearly.
+New placement/replacement still requires full image tracking. Placement Point
 is normalized from the top-left of the full image. Character Scale multiplies the
 prefab's scale; the final size depends on the selected prefab. Surface
 Offset and Rotation Offset can be adjusted on Object Spawner in AR_Scene.
@@ -40,8 +44,10 @@ SampleScene or package prefab was edited.
    Reopen the menu and select another character: it should replace the previous one.
    Selecting the same character should close the menu without restarting it.
 3. Navigate with right mouse + WASD and click/release on the character to react.
-4. Look away, then return: the character should hide when tracking is lost and
-   reappear as the same instance when tracking resumes.
+4. Step back: an existing character should remain visible during Limited image
+   tracking while the session still tracks. If image tracking becomes None or the
+   session loses tracking during Limited image tracking, it should hide; reacquiring
+   the marker should restore the same instance.
 5. To inspect or move the simulated target during Play Mode, expand the simulation
    environment scene in the Hierarchy and find Marker 001 (7 cm).
 

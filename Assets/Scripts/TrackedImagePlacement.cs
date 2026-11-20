@@ -46,15 +46,32 @@ namespace ARApp
 
         private void Update()
         {
-            // Retain the selected physical target while it is tracked. If it is
-            // removed or lost, allow another observation of the same image asset.
-            if (!IsTracking(currentImage))
-                currentImage = FindTrackedMarker();
+            // Limited image tracking can still provide the last known marker pose.
+            // Keep that target instead of discarding it when the user steps back.
+            if (currentImage == null || currentImage.trackingState == TrackingState.None)
+            {
+                var trackedMarker = FindTrackedMarker();
+                if (trackedMarker != null)
+                    currentImage = trackedMarker;
+            }
 
             if (!IsTracking(currentImage))
             {
                 SetPreviewVisible(false);
-                SetCharacterVisible(false);
+                bool canKeepCharacter = characterInstance != null &&
+                    imageManager.isActiveAndEnabled && currentImage != null &&
+                    currentImage.trackingState == TrackingState.Limited &&
+                    ARSession.state == ARSessionState.SessionTracking;
+
+                if (canKeepCharacter)
+                {
+                    // ARCore assumes an unseen image stays stationary. Use its
+                    // retained pose so session-coordinate corrections still apply.
+                    var retainedPose = GetPlacementPose();
+                    characterInstance.transform.SetPositionAndRotation(
+                        retainedPose.position, retainedPose.rotation * spawnYaw);
+                }
+                SetCharacterVisible(canKeepCharacter);
                 return;
             }
 
